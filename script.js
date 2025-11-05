@@ -1,17 +1,29 @@
-// Save a memory
-localStorage.setItem("lastEmotion", "curious");
-
-// Retrieve it later
-let emotion = localStorage.getItem("lastEmotion");
-
-// React to memory
 let log = document.getElementById("log");
-let button = document.getElementById("emotionButton");
+let input = document.getElementById("userInput");
+let submit = document.getElementById("submitInput");
 
-button.addEventListener("click", () => {
+// Optional: Retrieve stored emotion
+let emotion = localStorage.getItem("lastEmotion") || "neutral";
+
+submit.addEventListener("click", () => {
+  let message = input.value.trim();
+  input.value = ""; // Clear input
+
+  if (message === "") {
+    log.innerText = "The silence echoes.";
+    return;
+  }
+
+  // Save last emotion (example logic)
+  if (message.includes("why") || message.includes("?")) {
+    emotion = "curious";
+    localStorage.setItem("lastEmotion", emotion);
+  }
+
+  // Respond based on emotion
   if (emotion === "curious") {
-    log.innerText = "You return with questions again...";
+    log.innerText = `"${message}"... The AI tilts its head. It remembers your questions.`;
   } else {
-    log.innerText = "The ritual begins anew.";
+    log.innerText = `"${message}"... The ritual continues.`;
   }
 });
