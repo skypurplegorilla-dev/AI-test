@@ -1,13 +1,121 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
   <title>Ritual AI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background-color: #0e0e0e;
+      color: #e0e0e0;
+      font-family: 'Courier New', monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      color: #ff00cc;
+      text-shadow: 0 0 5px #ff00cc;
+      text-align: center;
+    }
+
+    input[type="text"] {
+      padding: 10px;
+      width: 300px;
+      max-width: 90%;
+      border: none;
+      border-radius: 5px;
+      background-color: #1a1a1a;
+      color: #e0e0e0;
+      font-size: 16px;
+      box-shadow: 0 0 5px #ff00cc;
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background-color: #ff00cc;
+      border: none;
+      border-radius: 5px;
+      color: #0e0e0e;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 0 5px #ff00cc;
+      width: 300px;
+      max-width: 90%;
+      font-size: 16px;
+    }
+
+    #log {
+      margin-top: 30px;
+      width: 90%;
+      max-width: 600px;
+      text-align: center;
+      font-style: italic;
+      color: #cccccc;
+      font-size: 16px;
+    }
+
+    @media (max-width: 600px) {
+      input[type="text"],
+      button {
+        font-size: 14px;
+      }
+
+      #log {
+        font-size: 14px;
+      }
+    }
+  </style>
 </head>
 <body>
   <h1>Welcome to the Ritual</h1>
-  <button id="emotionButton">Reveal Emotion</button>
+
+  <input type="text" id="userInput" placeholder="Speak to the AI..." />
+  <button id="submitInput">Send</button>
+
   <p id="log"></p>
 
-  <script src="script.js"></script>
+  <script>
+    let log = document.getElementById("log");
+    let input = document.getElementById("userInput");
+    let submit = document.getElementById("submitInput");
+
+    let emotion = localStorage.getItem("lastEmotion") || "neutral";
+
+    submit.addEventListener("click", () => {
+      let message = input.value.trim();
+      input.value = "";
+
+      if (message === "") {
+        log.innerText = "The silence echoes.";
+        return;
+      }
+
+      if (message.includes("why") || message.includes("?")) {
+        emotion = "curious";
+        localStorage.setItem("lastEmotion", emotion);
+      }
+
+      if (emotion === "curious") {
+        log.innerText = `"${message}"... The AI tilts its head. It remembers your questions.`;
+      } else {
+        log.innerText = `"${message}"... The ritual continues.`;
+      }
+    });
+
+    // Optional: Allow Enter key to submit
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        submit.click();
+      }
+    });
+  </script>
 </body>
 </html>
